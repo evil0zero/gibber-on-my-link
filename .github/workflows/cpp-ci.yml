@@ -1,0 +1,40 @@
+name: C++ builds and Python interoperability
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'CMakeLists.txt'
+      - 'cpp/**'
+      - 'tests/**'
+      - 'gibber.py'
+      - 'requirements.txt'
+      - '.github/workflows/cpp-ci.yml'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cross-language:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements.txt
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --config Release --parallel
+      - run: ctest --test-dir build -C Release --output-on-failure
+      - name: Cross-language codec + byte-identical WAV checks (Linux)
+        if: runner.os == 'Linux'
+        run: python tests/test_interop.py --binary build/gibber_cpp
+      - name: Cross-language codec + byte-identical WAV checks (Windows)
+        if: runner.os == 'Windows'
+        run: python tests/test_interop.py --binary build/Release/gibber_cpp.exe
