@@ -3,9 +3,12 @@
 
 import hashlib
 from pathlib import Path
+import sys
 
 import numpy as np
 from scipy.io import wavfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from gibber import SAMPLE_RATE, encode
 
