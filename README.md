@@ -73,6 +73,45 @@ Majority vote + CRC verification
 
 The single-burst WAV includes a sync chirp, an OFDM training symbol, three redundant data symbols, and short leading/trailing silence. See [`docs/PROTOCOL.md`](docs/PROTOCOL.md).
 
+## C++20 implementation (Windows and Linux)
+
+The `cpp/` implementation is a native C++20 codec with a built-in radix-2 FFT,
+no C++ third-party dependencies, and the **same wire format as the Python codec**.
+Pilot symbols and interleaver permutation tables are pinned to the Python v0.1
+NumPy-generated tables. Files made in either language decode in the other.
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+
+# Linux/macOS:
+./build/gibber_cpp encode samples/from_cpp.wav
+./build/gibber_cpp decode samples/gibber_fries.wav
+
+# Windows (PowerShell, with MSVC):
+.\build\Release\gibber_cpp.exe encode samples\from_cpp.wav
+.\build\Release\gibber_cpp.exe decode samples\gibber_fries.wav
+
+# Cross-language WAV compatibility (Linux; use .exe path on Windows):
+python tests/test_interop.py --binary build/gibber_cpp
+```
+
+The [C++ automated workflow](.github/workflows/cpp-ci.yml) compiles/tests
+both Linux and Windows and checks C++-to-Python WAV identity and Python-to-C++ decoding.
+This remains a **file/PCM proof of concept**, not a live microphone implementation.
+
+## Comparison with GibberLink / GGWave
+
+![Waveform duration versus GGWave payload-rate estimates](docs/comparison.svg)
+
+**Read the [methodology and limitations](docs/COMPARISON.md).** Our 155 ms
+waveform sends a pre-agreed **one-byte command** (inside a five-byte packet).
+The GGWave estimate sends the complete **31-byte sentence** at its published
+8–16 bytes/second rate. These are different payloads and not a matched
+speaker-to-microphone benchmark: we have not demonstrated superior general
+modem throughput, range or real-world reliability.
+
 ## Goals and limitations
 
 - **Demonstrated:** clean local WAV encode/decode and reproducible simulated additive-noise decode tests, using the included fixed command.
@@ -88,7 +127,7 @@ The single-burst WAV includes a sync chirp, an OFDM training symbol, three redun
 2. Measure end-to-end latency, delivery success, and false-positive rate across noise/distance/device types.
 3. Add packet sequence numbers, acknowledgement/retry, and versioned shared dictionaries.
 4. Add authenticated commands and a compact binary payload fallback for arbitrary information.
-5. Evaluate adaptive modulation, coding, and a C++/PortAudio implementation.
+5. Add live acoustic I/O through PortAudio (C++ implementation already available), then evaluate adaptive modulation and coding.
 
 ## Repository status
 
