@@ -19,6 +19,10 @@ from gibber import COMMAND_FRIES, SAMPLE_RATE, decode, encode
 class CrossLanguageTests(unittest.TestCase):
     binary = None
 
+    def setUp(self):
+        if self.binary is None:
+            self.skipTest("Run cross-language tests with --binary path/to/gibber_cpp")
+
     def test_cross_language_wav(self):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
