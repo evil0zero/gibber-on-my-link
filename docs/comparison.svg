@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 435" role="img" aria-labelledby="title desc">
+<title id="title">Gibber on My Link compared with GGWave audio payload-time estimates</title>
+<desc id="desc">Fixed-command waveform duration 155 milliseconds. Sending 31 bytes of text at GGWave's published 16 and 8 bytes per second gives theoretical payload times of 1938 and 3875 milliseconds, excluding protocol overhead. Payloads differ and this is not a matched benchmark.</desc>
+<style>
+.heading{font:700 26px system-ui,sans-serif;fill:#eff6ff}
+.sub{font:15px system-ui,sans-serif;fill:#b7c6dc}
+.label{font:700 17px system-ui,sans-serif;fill:#eff6ff}
+.number{font:700 16px system-ui,sans-serif;fill:#eff6ff}
+.detail{font:13px system-ui,sans-serif;fill:#bbcbdd}
+.tick{font:12px system-ui,sans-serif;fill:#bbcbdd}
+.warning{font:14px system-ui,sans-serif;fill:#ffdaa7}
+</style>
+<rect x="0" y="0" width="1050" height="435" rx="16" fill="#102033"/>
+<text x="30" y="44" class="heading">How long does the “fries” message take?</text>
+<text x="30" y="72" class="sub">Experimental waveform time vs. GGWave published-rate payload estimates</text>
+<g stroke="#64758c" stroke-opacity="0.55" stroke-dasharray="4 7">
+<line x1="250" y1="100" x2="250" y2="324"/>
+<line x1="400" y1="100" x2="400" y2="324"/>
+<line x1="550" y1="100" x2="550" y2="324"/>
+<line x1="700" y1="100" x2="700" y2="324"/>
+<line x1="850" y1="100" x2="850" y2="324"/>
+</g>
+<text x="30" y="131" class="label">Gibber on My Link</text>
+<rect x="250" y="111" width="23.2" height="33" rx="5" fill="#4bd2ab"/>
+<text x="285" y="132" class="number">155 ms</text>
+<text x="250" y="162" class="detail">5-byte frame; one-byte shared semantic command</text>
+<text x="30" y="207" class="label">GGWave at 16 B/s</text>
+<rect x="250" y="188" width="290.6" height="33" rx="5" fill="#f4b452"/>
+<text x="552" y="209" class="number">1,938 ms</text>
+<text x="250" y="238" class="detail">31-byte UTF-8 text; excludes framing and overhead</text>
+<text x="30" y="283" class="label">GGWave at 8 B/s</text>
+<rect x="250" y="264" width="581.3" height="33" rx="5" fill="#d47c70"/>
+<text x="842" y="285" class="number">3,875 ms</text>
+<text x="250" y="314" class="detail">31-byte UTF-8 text; excludes framing and overhead</text>
+<g class="tick" text-anchor="middle">
+<text x="250" y="342">0s</text><text x="400" y="342">1s</text>
+<text x="550" y="342">2s</text><text x="700" y="342">3s</text>
+<text x="850" y="342">4s</text>
+</g>
+<line x1="30" y1="363" x2="1018" y2="363" stroke="#61728a"/>
+<text x="30" y="388" class="warning">Not a matched speed or over-the-air benchmark: shared command vs. arbitrary text.</text>
+<text x="30" y="411" class="detail">Our 155 ms is file duration. GGWave's 8–16 B/s is its published rate, not a measured run here.</text>
+</svg>
